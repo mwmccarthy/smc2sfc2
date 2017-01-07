@@ -1,0 +1,5 @@
+venv/
+nodeenv/
+node_modules/
+static/gen/
+static/.webassets-cache/
