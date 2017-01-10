@@ -1,13 +1,27 @@
 <!doctype html>
 <html>
   <head>
-    <title>SNES ROM Converter: smc to sfc
+    <title>SNES ROM Converter: smc to sfc</title>
+    {% assets "js_all" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
+    {% endassets %}
   </head>
   <body>
     <h1>SNES ROM Converter</h1>
     <h2>smc to sfc</h2>
-    {% assets "js_all" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+    
+    <form id="convert-form" method="POST" action="/" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      {% if form.file.errors %}
+        {% for error in form.file.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+      {{ form.file }}
+
+      {{ form.submit }}
+
+    </form>
   </body>
 </html>

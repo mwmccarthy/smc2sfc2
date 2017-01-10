@@ -1,6 +1,7 @@
 from os import environ
+from sys import modules
 
-DEBUG = environ['DEBUG']
+attrs = ['DEBUG', 'SECRET_KEY', 'TYPESCRIPT_BIN']
 
-if DEBUG:
-    TYPESCRIPT_BIN = 'node_modules/.bin/tsc'
+for attr in attrs:
+    setattr(modules[__name__], attr, environ[attr])
