@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>SNES ROM Converter: smc to sfc</title>
-    {% assets "js_all" %}
+    {% assets filters="typescript", output="gen/app.js", "ts/app.ts" %}
       <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
     {% endassets %}
   </head>

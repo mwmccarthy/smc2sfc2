@@ -5,8 +5,7 @@ from forms import ConvertForm
 app = Flask(__name__)
 app.config.from_object('config')
 
-ts = Bundle('ts/app.ts', filters='typescript', output='gen/packed.js')
-Environment(app).register('js_all', ts)
+assets = Environment(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
