@@ -1,11 +1,7 @@
 click==6.6
 Flask==0.12
-Flask-Assets==0.12
-Flask-WTF==0.14
 gunicorn==19.6.0
 itsdangerous==0.24
 Jinja2==2.8.1
 MarkupSafe==0.23
--e git://github.com/mwmccarthy/webassets.git@dd2274683f5c2b7d20841876d8b8ea8c19bf1f41#egg=webassets
 Werkzeug==0.11.15
-WTForms==2.1

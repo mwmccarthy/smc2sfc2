@@ -1,7 +1,6 @@
 venv/
 nodeenv/
 node_modules/
-static/gen/
-static/.webassets-cache/
+static/dist
 *.pyc
 .env

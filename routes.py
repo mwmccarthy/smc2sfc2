@@ -1,13 +1,8 @@
-from flask import Flask, render_template, request
-from flask_assets import Environment, Bundle
-from forms import ConvertForm
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-assets = Environment(app)
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    form = ConvertForm()
-    return render_template('index.html', form=form)
+    return render_template('index.html')

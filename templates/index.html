@@ -1,27 +1,18 @@
 <!doctype html>
 <html>
-  <head>
-    <title>SNES ROM Converter: smc to sfc</title>
-    {% assets filters="typescript", output="gen/app.js", "ts/app.ts" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}" defer></script>
-    {% endassets %}
-  </head>
-  <body>
-    <h1>SNES ROM Converter</h1>
-    <h2>smc to sfc</h2>
-    
-    <form id="convert-form" method="POST" action="/" enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
+    <head>
+        <title>SNES ROM Converter: smc to sfc</title>
+    </head>
+    <body>
+        <h1>SNES ROM Converter</h1>
+        <h2>smc to sfc</h2>    
+        <div id="app"></div>
 
-      {% if form.file.errors %}
-        {% for error in form.file.errors %}
-          <p>{{ error }}</p>
-        {% endfor %}
-      {% endif %}
-      {{ form.file }}
+        <!-- Dependencies -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
 
-      {{ form.submit }}
-
-    </form>
-  </body>
+        <!-- Main -->
+        <script src="./static/dist/bundle.js"></script>
+    </body>
 </html>

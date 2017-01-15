@@ -1,9 +1,18 @@
 {
   "dependencies": {
-    "typescript": "^2.1.4"
+    "@types/react": "^15.0.0",
+    "@types/react-dom": "^0.14.20",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.0-beta.18",
+    "source-map-loader": "^0.1.6",
+    "typescript": "^2.1.5"
   },
   "engines": {
     "node": "7.3.0",
     "npm": "3.10.10"
-  }
+  },
+  "heroku-postbuild": "webpack"
 }
