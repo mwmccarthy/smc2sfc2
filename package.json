@@ -12,5 +12,7 @@
     "node": "7.3.0",
     "npm": "3.10.10"
   },
-  "heroku-postbuild": "webpack"
+  "scripts": {
+    "heroku-postbuild": "webpack"
+  }
 }
