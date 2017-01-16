@@ -4,3 +4,4 @@ node_modules/
 static/dist
 *.pyc
 .env
+webpack-assets.json

@@ -1,7 +1,11 @@
+const path = require('path');
+const AssetsPlugin = require('assets-webpack-plugin');
+const assetsPluginInstance = new AssetsPlugin();
+
 module.exports = {
-    entry: "./static/src/index.tsx",
+    entry: {index: "./static/src/index.tsx"},
     output: {
-        filename: "bundle.js",
+        filename: "bundle.[hash].js",
         path: __dirname + "/static/dist"
     },
 
@@ -33,4 +37,6 @@ module.exports = {
         "react": "React",
         "react-dom": "ReactDOM"
     },
+
+    plugins: [assetsPluginInstance]
 };
