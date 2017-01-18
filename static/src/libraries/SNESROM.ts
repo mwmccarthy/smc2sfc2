@@ -6,7 +6,7 @@ export class SNESROM {
     hiROM: boolean;
     title: string;
 
-    constructor(file: File) {
+    constructor(file: File, callback?: Function) {
         this.name = file.name;
         this.size = file.size;
         this.headerSize = this.size % SNESROM.MIN_FILE_SIZE;
@@ -43,6 +43,8 @@ export class SNESROM {
             this.title = String.fromCharCode(
                 ...dump.slice(indices["title"], indices["title"] + 21)
             );
+
+            if (callback) callback();
         });
 
         reader.readAsArrayBuffer(file);

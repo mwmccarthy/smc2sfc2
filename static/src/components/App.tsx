@@ -20,13 +20,13 @@ export class App extends React.Component<AppProps, AppState> {
         const currentNames: string[] = currentRoms.map(r => r.name);
         const newRoms: File[] = Array.from(e.currentTarget.files);
 
-        for (const rom of newRoms)
-            if (currentNames.indexOf(rom.name) < 0)
-                currentRoms.push(new SNESROM(rom));
-
-        this.setState({
-            roms: currentRoms
-        });
+        for (const rom of newRoms) {
+            if (currentNames.indexOf(rom.name) < 0) {
+                currentRoms.push(new SNESROM(rom, () => {
+                    this.setState({ roms: currentRoms });
+                }));
+            }
+        }
     }
 
     render() {
