@@ -1,9 +1,10 @@
 import * as React from "react";
 import { FileField } from "./FileField";
+import { SNESROM } from "../libraries/SNESROM";
 
-export interface AppProps {};
+export interface AppProps { };
 export interface AppState {
-    roms: File[]
+    roms: SNESROM[]
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -14,19 +15,28 @@ export class App extends React.Component<AppProps, AppState> {
         };
     }
 
-    handleFileChange(e: React.FormEvent<HTMLInputElement>) {
-        const roms = this.state.roms.slice();
-        const rom = e.currentTarget.files[0];
+    handleFileChange(e: React.FormEvent<HTMLInputElement>): void {
+        const currentRoms: SNESROM[] = this.state.roms.slice();
+        const currentNames: string[] = currentRoms.map(r => r.name);
+        const newRoms: File[] = Array.from(e.currentTarget.files);
+
+        for (const rom of newRoms)
+            if (currentNames.indexOf(rom.name) < 0)
+                currentRoms.push(new SNESROM(rom));
+
         this.setState({
-            roms: roms.concat(rom)
-        })
-        return;
+            roms: currentRoms
+        });
     }
 
     render() {
-        const roms = this.state.roms.map((rom) => {
+        const romsList: JSX.Element[] = this.state.roms.map((rom) => {
             return (
-                <li>{rom.name}</li>
+                <li>
+                    <p>{rom.name}</p>
+                    <p>{rom.title}</p>
+                    <p>{rom.headerSize}</p>
+                </li>
             );
         });
 
@@ -37,30 +47,8 @@ export class App extends React.Component<AppProps, AppState> {
                         return this.handleFileChange(e)
                     }}
                 />
-                <ol>{roms}</ol>
+                <ol>{romsList}</ol>
             </div>
         );
     }
 }
-
-// const form: HTMLElement = document.getElementById("convert-form");
-
-// form.addEventListener("submit", function(event: Event): void {
-
-//     event.preventDefault();
-
-//     const rom: File = this['file-field'].files[0];
-//     const reader: FileReader = new FileReader();
-
-//     this['file-field'].value = "";
-
-//     reader.addEventListener("load", function(): void {
-//         const buffer: ArrayBuffer = this.result;
-//         console.log('Do some stuff.');
-//         // Do some stuff.
-//     });
-
-//     if (rom instanceof File) {
-//         reader.readAsArrayBuffer(rom);
-//     }
-// });
