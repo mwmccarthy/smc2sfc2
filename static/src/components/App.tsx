@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FileField } from "./FileField";
+import { RomDisplay } from "./RomDisplay";
 import { SNESROM } from "../libraries/SNESROM";
 
 export interface AppProps { };
@@ -31,13 +32,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         const romsList: JSX.Element[] = this.state.roms.map((rom) => {
-            return (
-                <li>
-                    <p>{rom.name}</p>
-                    <p>{rom.title}</p>
-                    <p>{rom.headerSize}</p>
-                </li>
-            );
+            return <RomDisplay rom={rom} />;
         });
 
         return (
@@ -47,7 +42,7 @@ export class App extends React.Component<AppProps, AppState> {
                         return this.handleFileChange(e)
                     }}
                 />
-                <ol>{romsList}</ol>
+                <div>{romsList}</div>
             </div>
         );
     }
