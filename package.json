@@ -8,10 +8,14 @@
   "dependencies": {
     "@types/react": "^15.0.0",
     "@types/react-dom": "^0.14.20",
+    "material-ui": "^0.16.7",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
+    "@types/material-ui": "^0.16.47",
+    "@types/react-tap-event-plugin": "0.0.30",
     "assets-webpack-plugin": "^3.5.0",
     "awesome-typescript-loader": "^3.0.0-beta.18",
     "source-map-loader": "^0.1.6",

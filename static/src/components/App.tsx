@@ -1,14 +1,16 @@
 import * as React from "react";
+import AppBar from "material-ui/AppBar";
 import { FileField } from "./FileField";
-import { RomDisplay } from "./RomDisplay";
+import RomDisplay from "./RomDisplay";
 import { SNESROM } from "../libraries/SNESROM";
 
-export interface AppProps { };
-export interface AppState {
+
+interface AppProps { };
+interface AppState {
     roms: SNESROM[]
 };
 
-export class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<AppProps, AppState> {
     constructor() {
         super();
         this.state = {
@@ -47,3 +49,5 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 }
+
+export default App;
