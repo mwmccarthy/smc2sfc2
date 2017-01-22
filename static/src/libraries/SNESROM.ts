@@ -64,7 +64,7 @@ export class SNESROM {
         const header = this.rom.slice(offset, offset + 0x80);
         const title = header.slice(0x10, 0x25);
 
-        this.title = String.fromCharCode(...title);
+        this.title = String.fromCharCode(...title).trim();
         this.region = header[0x29];
 
         // weird logic here is from snes9x, can't find documentation

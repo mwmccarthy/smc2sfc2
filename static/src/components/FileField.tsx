@@ -1,5 +1,5 @@
 import * as React from "react";
-import RaisedButton from "material-ui/RaisedButton";
+import FlatButton from "material-ui/FlatButton";
 
 export interface FileFieldProps {
     onChange: Function
@@ -8,12 +8,10 @@ export interface FileFieldProps {
 export function FileField(props: FileFieldProps) {
     return (
         <div className="file-field" style={{ margin: "1em" }}>
-            <RaisedButton
+            <FlatButton
                 containerElement="label"
                 label="Add Files"
-                fullWidth={true}
-                primary={true}
-            >
+                primary={true}>
                 <input
                     type="file"
                     accept=".smc, .sfc"
@@ -21,7 +19,7 @@ export function FileField(props: FileFieldProps) {
                     style={{ display: "none" }}
                     multiple
                 />
-            </RaisedButton>
+            </FlatButton>
         </div>
     );
 }

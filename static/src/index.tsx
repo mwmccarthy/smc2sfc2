@@ -9,15 +9,14 @@ import * as injectTapEventPlugin from "react-tap-event-plugin";
 
 const muiTheme = getMuiTheme({
     palette: {
-        primary1Color: Colors.deepPurple500,
-        primary2Color: Colors.deepPurple700,
-        primary3Color: Colors.grey400,
-        accent1Color: Colors.purple300,
-        accent2Color: Colors.grey100,
-        accent3Color: Colors.grey500,
-        pickerHeaderColor: Colors.deepPurple500
-    },
-    spacing: spacing
+        primary1Color: Colors.white,
+        // primary2Color: Colors.grey200,
+        // primary3Color: Colors.grey400,
+        accent1Color: Colors.deepPurple500,
+        // accent2Color: Colors.grey100,
+        // accent3Color: Colors.grey500,
+        // pickerHeaderColor: Colors.deepPurple500
+    }
 });
 
 const App = () => (
