@@ -1,4 +1,4 @@
-import { LICENSEES } from "./Licensees";
+import * as md5 from "js-md5";
 
 export class SNESROM {
     name: string;
@@ -9,10 +9,9 @@ export class SNESROM {
     hiROM: boolean;
     title: string;
     region: number;
-    id: string;
+    hash: string;
     // licensee: string;
     url: string;
-
 
     constructor(file: File, callback?: Function) {
         this.name = file.name;
@@ -25,12 +24,13 @@ export class SNESROM {
             const buffer: ArrayBuffer = reader.result;
             const blob = new Blob([buffer.slice(this.headerSize)])
 
+            this.hash = md5(buffer);
             this.rom = new Uint8Array(buffer.slice(this.headerSize));
             this._detectMemMap();
             this._parseHeader();
             this.url = window.URL.createObjectURL(blob);
-            
-            if (callback) callback();
+
+            if (callback) callback(this);
         });
 
         reader.readAsArrayBuffer(file);
@@ -66,7 +66,6 @@ export class SNESROM {
 
         this.title = String.fromCharCode(...title);
         this.region = header[0x29];
-        this.id = String.fromCharCode(...header.slice(0x02, 0x06));
 
         // weird logic here is from snes9x, can't find documentation
         // let licensee: number;
@@ -84,11 +83,19 @@ export class SNESROM {
         // this.licensee = LICENSEES[licensee] || "unknown";
     }
 
+    // _hashBuffer(buf: ArrayBuffer): string {
+    //     const dv = new DataView(buf);
+    //     const words = Array.from(
+    //         { length: dv.byteLength / 4 }, (v: void, k) => dv.getUint32(k * 4)
+    //     );
+    //     const wa = new WordArray(words);
+    //     return MD5(wa);
+    // }
+
     _isalnum(n: number) {
         const char = String.fromCharCode(n);
         return (char >= 'a' && char <= 'z') ||
-               (char >= 'A' && char <= 'Z') ||
-               (char >= '0' && char <= '9');
+            (char >= 'A' && char <= 'Z') ||
+            (char >= '0' && char <= '9');
     }
 }
-

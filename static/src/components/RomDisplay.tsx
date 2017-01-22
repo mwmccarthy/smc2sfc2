@@ -5,32 +5,33 @@ import FlatButton from "material-ui/FlatButton";
 import Toggle from "material-ui/Toggle"
 
 interface RomDisplayProps {
-    rom: SNESROM
+    rom: SNESROM,
+    key: string
 };
 
 function RomDisplay(props: RomDisplayProps) {
     return (
-        <div className="rom-display" style={{ margin: "1em" }}>
-            <Card>
-                <CardHeader
-                    title={props.rom.title}
-                    actAsExpander={true}
-                    showExpandableButton={true}
+        <div style={{ margin: "1em" }}>
+        <Card>
+            <CardHeader
+                title={props.rom.title}
+                actAsExpander={true}
+                showExpandableButton={true}
+            />
+            <CardText expandable={true}>
+                <p>Region: {props.rom.region}</p>
+                <p>HiROM: {String(props.rom.hiROM)}</p>
+                <p>MD5: {props.rom.hash}</p>
+                <p>Header size: {props.rom.headerSize}</p>
+            </CardText>
+            <CardActions>
+                <FlatButton label="Download" primary={true} />
+                <Toggle
+                    label="Remove header?"
+                    labelPosition="right"
                 />
-                <CardText expandable={true}>
-                    <p>Region: {props.rom.region}</p>
-                    <p>HiROM: {String(props.rom.hiROM)}</p>
-                    <p>ID: {props.rom.id}</p>
-                    <p>Header size: {props.rom.headerSize}</p>
-                </CardText>
-                <CardActions>
-                    <FlatButton label="Download" primary={true} />
-                    <Toggle
-                        label="Remove header?"
-                        labelPosition="right"
-                    />
-                </CardActions>
-            </Card >
+            </CardActions>
+        </Card >
         </div>
     );
 };

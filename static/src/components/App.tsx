@@ -4,38 +4,45 @@ import { FileField } from "./FileField";
 import RomDisplay from "./RomDisplay";
 import { SNESROM } from "../libraries/SNESROM";
 
-
 interface AppProps { };
 interface AppState {
-    roms: SNESROM[]
+    roms: { [hash: string]: SNESROM }
 };
 
 class App extends React.Component<AppProps, AppState> {
     constructor() {
         super();
         this.state = {
-            roms: []
+            roms: {}
         };
     }
 
     handleFileChange(e: React.FormEvent<HTMLInputElement>): void {
-        const currentRoms: SNESROM[] = this.state.roms.slice();
-        const currentNames: string[] = currentRoms.map(r => r.name);
+        const roms: { [hash: string]: SNESROM } = {};
+        Object.assign(roms, this.state.roms);
         const newRoms: File[] = Array.from(e.currentTarget.files);
-
-        for (const rom of newRoms) {
-            if (currentNames.indexOf(rom.name) < 0) {
-                currentRoms.push(new SNESROM(rom, () => {
-                    this.setState({ roms: currentRoms });
-                }));
-            }
+        for (const f of newRoms) {
+            new SNESROM(f, (rom: SNESROM) => {
+                if (!roms[rom.hash]) roms[rom.hash] = rom;
+                this.setState({ roms: roms });
+            });
         }
     }
 
     render() {
-        const romsList: JSX.Element[] = this.state.roms.map((rom) => {
-            return <RomDisplay rom={rom} />;
-        });
+        const romsList: JSX.Element[] = [];
+
+        for (const key in this.state.roms) {
+            if (this.state.roms.hasOwnProperty(key)) {
+                romsList.push(
+                    <RomDisplay key={key} rom={this.state.roms[key]} />
+                );
+            }
+        }
+
+        // .map((rom, k) => {
+        //     return <RomDisplay rom={rom} key={rom.hash} />;
+        // });
 
         return (
             <div>
