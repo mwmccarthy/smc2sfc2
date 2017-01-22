@@ -3,7 +3,6 @@ import { SNESROM } from "../libraries/SNESROM";
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from "material-ui/FlatButton";
 import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
-import Toggle from "material-ui/Toggle"
 
 interface RomDisplayProps {
     rom: SNESROM,
@@ -13,7 +12,7 @@ interface RomDisplayProps {
 
 function RomDisplay(props: RomDisplayProps) {
     return (
-        <div style={{ margin: "1em" }}>
+        <div style={{ margin: "1rem" }}>
             <Card>
                 <CardHeader
                     avatar={ <NavigationExpandMore/> }
@@ -22,11 +21,15 @@ function RomDisplay(props: RomDisplayProps) {
                     showExpandableButton={false}
                 />
                 <CardText expandable={true}>
+                    <p>File Name: {props.rom.name}</p>
                     <p>Region: {props.rom.region}</p>
-                    <p>HiROM: {String(props.rom.hiROM)}</p>
+                    <p>MemMap: {props.rom.hiROM ? "HiROM" : "LoROM"}</p>
                     <p>MD5: {props.rom.hash}</p>
-                    <p>Header size: {props.rom.headerSize}</p>
+                    <p>Header: {props.rom.headerSize ? "Yes" : "No"}</p>
                 </CardText>
+                <CardMedia expandable={true}>
+                    <img src="http://thegamesdb.net/banners/graphical/1526-g.png"/>
+                </CardMedia>
                 <CardActions style={{ textAlign: 'right' }}>
                     <FlatButton
                         label="remove"

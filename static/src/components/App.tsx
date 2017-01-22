@@ -2,6 +2,8 @@ import * as React from "react";
 import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
 import IconButton from "material-ui/IconButton"
 import HardwareVideogameAsset from "material-ui/svg-icons/hardware/videogame-asset"
+import FileFileDownload from "material-ui/svg-icons/file/file-download"
+import Toggle from "material-ui/Toggle"
 import { deepPurple500, white } from "material-ui/styles/colors";
 import { FileField } from "./FileField";
 import RomDisplay from "./RomDisplay";
@@ -55,13 +57,9 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        // .map((rom, k) => {
-        //     return <RomDisplay rom={rom} key={rom.hash} />;
-        // });
-
         return (
             <div>
-                <div style={{ margin: "0px" }}>
+                <div style={{ margin: "0rem" }}>
                     <Toolbar style={{ backgroundColor: deepPurple500 }} >
                         <ToolbarGroup firstChild={true}>
                             <HardwareVideogameAsset
@@ -79,6 +77,14 @@ class App extends React.Component<AppProps, AppState> {
                                     return this.handleFileChange(e)
                                 }}
                             />
+                            <IconButton
+                                tooltip="Download ROMs"
+                                touch={true}
+                                tooltipPosition="bottom-left">
+                                <FileFileDownload
+                                    color={white}
+                                />
+                            </IconButton>
                         </ToolbarGroup>
                     </Toolbar>
                 </div>

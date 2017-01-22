@@ -7,7 +7,7 @@ export interface FileFieldProps {
 
 export function FileField(props: FileFieldProps) {
     return (
-        <div className="file-field" style={{ margin: "1em" }}>
+        <div className="file-field" style={{ margin: "1rem" }}>
             <FlatButton
                 containerElement="label"
                 label="Add Files"

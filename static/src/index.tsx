@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -10,12 +11,12 @@ import * as injectTapEventPlugin from "react-tap-event-plugin";
 const muiTheme = getMuiTheme({
     palette: {
         primary1Color: Colors.white,
-        // primary2Color: Colors.grey200,
-        // primary3Color: Colors.grey400,
+        primary2Color: Colors.purple200,
+        primary3Color: Colors.grey400,
         accent1Color: Colors.deepPurple500,
-        // accent2Color: Colors.grey100,
-        // accent3Color: Colors.grey500,
-        // pickerHeaderColor: Colors.deepPurple500
+        accent2Color: Colors.grey100,
+        accent3Color: Colors.grey500,
+        pickerHeaderColor: Colors.deepPurple500
     }
 });
 
