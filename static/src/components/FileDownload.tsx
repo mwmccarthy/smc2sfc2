@@ -6,7 +6,9 @@ import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 import Toggle from "material-ui/Toggle";
 
-interface FileDownloadProps { };
+interface FileDownloadProps {
+    handleDownload: Function
+};
 interface FileDownloadState {
     open: boolean,
     anchorEl?: Element
@@ -50,7 +52,10 @@ class FileDownload extends React.Component<FileDownloadProps, FileDownloadState>
                 >
                     <Toggle />
                     <MenuItem primaryText="with headers (.smc)" />
-                    <MenuItem primaryText="no headers (.sfc)" />
+                    <MenuItem
+                        primaryText="no headers (.sfc)"
+                        onTouchTap={(e) => this.props.handleDownload(e)}
+                    />
                 </IconMenu>
             </div>
         );

@@ -5,6 +5,7 @@ import FileField from "./FileField";
 import FileDownload from "./FileDownload";
 import RomDisplay from "./RomDisplay";
 import SNESROM from "../libraries/SNESROM";
+import * as JSZip from "jszip";
 
 interface AppProps { };
 interface AppState {
@@ -41,6 +42,12 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ roms: roms });
     }
 
+    handleDownload(e: __MaterialUI.TouchTapEvent): void {
+        const zip = new JSZip();
+        console.log(`yes yes y'all! ${JSZip.support.uint8array}`)
+        
+    }
+
     render() {
         const romsList: JSX.Element[] = [];
 
@@ -73,10 +80,14 @@ class App extends React.Component<AppProps, AppState> {
                         <ToolbarGroup lastChild={true}>
                             <FileField
                                 onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                                    return this.handleFileChange(e)
+                                    return this.handleFileChange(e);
                                 }}
                             />
-                            <FileDownload />
+                            <FileDownload
+                                handleDownload={(e: __MaterialUI.TouchTapEvent) => {
+                                    return this.handleDownload(e);
+                                }}
+                            />
                         </ToolbarGroup>
                     </Toolbar>
                 </div>

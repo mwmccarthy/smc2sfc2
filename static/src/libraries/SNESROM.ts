@@ -4,15 +4,12 @@ class SNESROM {
     name: string;
     size: number;
     headerSize: number;
-    // malformed: boolean;
-    rom: Uint8Array;
+    buffer: ArrayBuffer;
     hiROM: boolean;
     title: string;
     region: string;
     video: string;
     hash: string;
-    // licensee: string;
-    url: string;
 
     constructor(file: File, callback?: Function) {
         this.name = file.name;
@@ -22,15 +19,10 @@ class SNESROM {
         const reader: FileReader = new FileReader();
 
         reader.addEventListener("load", () => {
-            const buffer: ArrayBuffer = reader.result;
-            const blob = new Blob([buffer.slice(this.headerSize)])
-
-            this.hash = md5(buffer);
-            this.rom = new Uint8Array(buffer.slice(this.headerSize));
+            this.buffer = reader.result;
+            this.hash = md5(this.buffer);
             this._detectMemMap();
             this._parseHeader();
-            this.url = window.URL.createObjectURL(blob);
-
             if (callback) callback(this);
         });
 
@@ -70,24 +62,31 @@ class SNESROM {
 
     _detectMemMap() {
         // checking for internal ROM header at 0xffb0 (HiROM)
-        const header = this.rom.slice(0xffb0, 0x10000);
-        const checksum = (header[0x2c] << 8) + header[0x2d];
-        const complement = (header[0x2e] << 8) + header[0x2f];
+        const dv = new DataView(
+            this.buffer,
+            this.headerSize + 0xffb0,
+            0x30
+        );
+        const checksum = dv.getUint16(0x2c);
+        const complement = dv.getUint16(0x2e);
 
-        // this should work most of the time
-        // TODO: the rest of the time
+        // This should work almost all of the time. TODO: the rest of the time
         this.hiROM = (checksum + complement === 0xffff);
     }
 
     _parseHeader() {
-        const offset = this.hiROM ? 0xffb0 : 0x7fb0;
-        const header = this.rom.slice(offset, offset + 0x80);
-        const title = header.slice(0x10, 0x25);
-        const region = header[0x29];
-
-        this.title = String.fromCharCode(...title).trim();
+        const dv = new DataView(
+            this.buffer,
+            this.headerSize + (this.hiROM ? 0xffb0 : 0x7fb0),
+            0x40
+        );
+        const region = dv.getUint8(0x29);
+        
         this.region = SNESROM.REGIONS[region];
         this.video = (region > 12 || region < 2) ? "NTSC" : "PAL";
+        this.title = String.fromCharCode(
+            ...Array.from({ length: 21 }, (v: void, k) => dv.getUint8(0x10 + k))
+        ).trim();
     }
 }
 
