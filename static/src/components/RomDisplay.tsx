@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SNESROM } from "../libraries/SNESROM";
+import SNESROM from "../libraries/SNESROM";
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from "material-ui/FlatButton";
 import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
@@ -20,17 +20,21 @@ function RomDisplay(props: RomDisplayProps) {
                     actAsExpander={true}
                     showExpandableButton={false}
                 />
+                {/* TODO: Add thegamesdb info */}
+                {/*
+                <CardMedia expandable={true}>
+                    <img src="http://thegamesdb.net/banners/graphical/1526-g.png"/>
+                </CardMedia>
+                */}
                 <CardText expandable={true}>
                     <p>File Name: {props.rom.name}</p>
                     <p>Region: {props.rom.region}</p>
+                    <p>Video: {props.rom.video}</p>
                     <p>MemMap: {props.rom.hiROM ? "HiROM" : "LoROM"}</p>
                     <p>MD5: {props.rom.hash}</p>
                     <p>Header: {props.rom.headerSize ? "Yes" : "No"}</p>
                 </CardText>
-                <CardMedia expandable={true}>
-                    <img src="http://thegamesdb.net/banners/graphical/1526-g.png"/>
-                </CardMedia>
-                <CardActions style={{ textAlign: 'right' }}>
+                <CardActions style={{ textAlign: "right" }}>
                     <FlatButton
                         label="remove"
                         secondary={true}

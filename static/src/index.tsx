@@ -3,21 +3,20 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
-import * as Colors from "material-ui/styles/colors";
 import spacing from 'material-ui/styles/spacing';
 import BaseComponent from "./components/App";
 import * as injectTapEventPlugin from "react-tap-event-plugin";
 
 const muiTheme = getMuiTheme({
     palette: {
-        primary1Color: Colors.white,
-        primary2Color: Colors.purple200,
-        primary3Color: Colors.grey400,
-        accent1Color: Colors.deepPurple500,
-        accent2Color: Colors.grey100,
-        accent3Color: Colors.grey500,
-        pickerHeaderColor: Colors.deepPurple500
-    }
+        primary1Color: "#ffffff",    // white
+        primary2Color: "#8176a2",    // SNES lavendar
+        primary3Color: "#6d6870",    // SNES dark grey
+        accent1Color: "#493580",     // SNES purple
+        accent2Color: "#bdbcc0",     // SNES light grey
+        accent3Color: "#6d6870",     // SNES dark grey
+        pickerHeaderColor: "#493580" // SNES purple
+    },
 });
 
 const App = () => (

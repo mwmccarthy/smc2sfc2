@@ -1,13 +1,10 @@
 import * as React from "react";
 import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
-import IconButton from "material-ui/IconButton"
-import HardwareVideogameAsset from "material-ui/svg-icons/hardware/videogame-asset"
-import FileFileDownload from "material-ui/svg-icons/file/file-download"
-import Toggle from "material-ui/Toggle"
-import { deepPurple500, white } from "material-ui/styles/colors";
-import { FileField } from "./FileField";
+import HardwareVideogameAsset from "material-ui/svg-icons/hardware/videogame-asset";
+import FileField from "./FileField";
+import FileDownload from "./FileDownload";
 import RomDisplay from "./RomDisplay";
-import { SNESROM } from "../libraries/SNESROM";
+import SNESROM from "../libraries/SNESROM";
 
 interface AppProps { };
 interface AppState {
@@ -27,9 +24,11 @@ class App extends React.Component<AppProps, AppState> {
         Object.assign(roms, this.state.roms);
         const newRoms: File[] = Array.from(e.currentTarget.files);
 
+        e.currentTarget.value = "";
+
         for (const f of newRoms) {
             new SNESROM(f, (rom: SNESROM) => {
-                if (!roms[rom.hash]) roms[rom.hash] = rom;
+                if (!(rom.hash in roms)) roms[rom.hash] = rom;
                 this.setState({ roms: roms });
             });
         }
@@ -60,15 +59,15 @@ class App extends React.Component<AppProps, AppState> {
         return (
             <div>
                 <div style={{ margin: "0rem" }}>
-                    <Toolbar style={{ backgroundColor: deepPurple500 }} >
+                    <Toolbar style={{ backgroundColor: "#493580" }} >
                         <ToolbarGroup firstChild={true}>
                             <HardwareVideogameAsset
-                                color={white}
+                                color={"#ffffff"}
                                 style={{ margin: "1em" }}
                             />
                             <ToolbarTitle
-                                text="smc2sfc2: SNES ROM Converter"
-                                style={{ color: white }}
+                                text="smc2sfc2"
+                                style={{ color: "#ffffff" }}
                             />
                         </ToolbarGroup>
                         <ToolbarGroup lastChild={true}>
@@ -77,14 +76,7 @@ class App extends React.Component<AppProps, AppState> {
                                     return this.handleFileChange(e)
                                 }}
                             />
-                            <IconButton
-                                tooltip="Download ROMs"
-                                touch={true}
-                                tooltipPosition="bottom-left">
-                                <FileFileDownload
-                                    color={white}
-                                />
-                            </IconButton>
+                            <FileDownload />
                         </ToolbarGroup>
                     </Toolbar>
                 </div>

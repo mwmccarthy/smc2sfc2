@@ -1,6 +1,6 @@
 import * as md5 from "js-md5";
 
-export class SNESROM {
+class SNESROM {
     name: string;
     size: number;
     headerSize: number;
@@ -8,7 +8,8 @@ export class SNESROM {
     rom: Uint8Array;
     hiROM: boolean;
     title: string;
-    region: number;
+    region: string;
+    video: string;
     hash: string;
     // licensee: string;
     url: string;
@@ -39,6 +40,25 @@ export class SNESROM {
     static get MAX_ROM_SIZE(): number { return 0x600000; }
     static get MIN_ROM_SIZE(): number { return 0x40000; }
     static get SMC_HEADER_SIZE(): number { return 0x200; }
+    static get REGIONS(): string[] {
+        // from snes9x
+        return [
+            "Japan",
+            "USA and Canada",
+            "Oceania, Europe and Asia",
+            "Sweden",
+            "Finland",
+            "Denmark",
+            "France",
+            "Holland",
+            "Spain",
+            "Germany, Austria, and Switzerland",
+            "Italy",
+            "Hong Kong and China",
+            "Indonesia",
+            "South Korea"
+        ];
+    }
 
     tooBig(): boolean {
         return this.size > SNESROM.MAX_ROM_SIZE + SNESROM.SMC_HEADER_SIZE;
@@ -63,39 +83,12 @@ export class SNESROM {
         const offset = this.hiROM ? 0xffb0 : 0x7fb0;
         const header = this.rom.slice(offset, offset + 0x80);
         const title = header.slice(0x10, 0x25);
+        const region = header[0x29];
 
         this.title = String.fromCharCode(...title).trim();
-        this.region = header[0x29];
-
-        // weird logic here is from snes9x, can't find documentation
-        // let licensee: number;
-        // if (header[0x2a] !== 0x33) {
-        //     licensee = (header[0x2a] & 0xF00) * 36 + (header[0x2a] & 0xf);
-        // }
-        // else if (this._isalnum(header[0]) && this._isalnum(header[1])) {
-        //     let lt1, rt1, lt2, rt2;
-        //     lt1 = header[0] - (header[0] >= 97 ? 32 : 0);
-        //     lt1 = header[0] - (header[0] >= 97 ? 32 : 0);
-        //     lt2 = (lt1 > 57) ? (lt1 - 55) : (lt1 - 48);
-        //     rt2 = (rt1 > 57) ? (rt1 - 55) : (rt1 - 48);
-        //     licensee = lt2 * 36 + rt2;
-        // }
-        // this.licensee = LICENSEES[licensee] || "unknown";
-    }
-
-    // _hashBuffer(buf: ArrayBuffer): string {
-    //     const dv = new DataView(buf);
-    //     const words = Array.from(
-    //         { length: dv.byteLength / 4 }, (v: void, k) => dv.getUint32(k * 4)
-    //     );
-    //     const wa = new WordArray(words);
-    //     return MD5(wa);
-    // }
-
-    _isalnum(n: number) {
-        const char = String.fromCharCode(n);
-        return (char >= 'a' && char <= 'z') ||
-            (char >= 'A' && char <= 'Z') ||
-            (char >= '0' && char <= '9');
+        this.region = SNESROM.REGIONS[region];
+        this.video = (region > 12 || region < 2) ? "NTSC" : "PAL";
     }
 }
+
+export default SNESROM;

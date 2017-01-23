@@ -1,17 +1,18 @@
 import * as React from "react";
 import FlatButton from "material-ui/FlatButton";
 
-export interface FileFieldProps {
+interface FileFieldProps {
     onChange: Function
 };
 
-export function FileField(props: FileFieldProps) {
+function FileField(props: FileFieldProps) {
     return (
         <div className="file-field" style={{ margin: "1rem" }}>
             <FlatButton
                 containerElement="label"
                 label="Add Files"
-                primary={true}>
+                primary={true}
+            >
                 <input
                     type="file"
                     accept=".smc, .sfc"
@@ -23,3 +24,5 @@ export function FileField(props: FileFieldProps) {
         </div>
     );
 }
+
+export default FileField;
