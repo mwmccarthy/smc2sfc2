@@ -11,22 +11,14 @@ class SNESROM {
     video: string;
     hash: string;
 
-    constructor(file: File, callback?: Function) {
-        this.name = file.name;
-        this.size = file.size;
+    constructor(name: string, buf: ArrayBuffer) {
+        this.name = name;
+        this.buffer = buf;
+        this.size = buf.byteLength;
         this.headerSize = this.size % SNESROM.MIN_ROM_SIZE;
-
-        const reader: FileReader = new FileReader();
-
-        reader.addEventListener("load", () => {
-            this.buffer = reader.result;
-            this.hash = md5(this.buffer);
-            this._detectMemMap();
-            this._parseHeader();
-            if (callback) callback(this);
-        });
-
-        reader.readAsArrayBuffer(file);
+        this.hash = md5(this.buffer);
+        this._detectMemMap();
+        this._parseHeader();
     }
 
     static get MAX_ROM_SIZE(): number { return 0x600000; }
