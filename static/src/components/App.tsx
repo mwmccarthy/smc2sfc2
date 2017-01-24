@@ -26,22 +26,20 @@ class App extends React.Component<AppProps, AppState> {
         const newRoms: File[] = Array.from(e.currentTarget.files);
         e.currentTarget.value = "";
 
-        for (const file of newRoms) {
-            ((f) => {
-                const reader = new FileReader();
-                const name = f.name;
-                reader.addEventListener("load", (e) => {
-                    const buf = reader.result;
-                    const rom = new SNESROM(name, buf);
-                    const roms: RomDict = {};
-                    Object.assign(roms, this.state.roms);
-                    if (!roms.hasOwnProperty(rom.hash)) {
-                        roms[rom.hash] = rom;
-                        this.setState({ roms: roms });
-                    }
-                })
-                reader.readAsArrayBuffer(f);
-            })(file);
+        for (const f of newRoms) {
+            const reader = new FileReader();
+            const name = f.name;
+            reader.addEventListener("load", (e) => {
+                const buf = reader.result;
+                const rom = new SNESROM(name, buf);
+                const roms: RomDict = {};
+                Object.assign(roms, this.state.roms);
+                if (!roms.hasOwnProperty(rom.hash)) {
+                    roms[rom.hash] = rom;
+                    this.setState({ roms: roms });
+                }
+            })
+            reader.readAsArrayBuffer(f);
         }
     }
 
