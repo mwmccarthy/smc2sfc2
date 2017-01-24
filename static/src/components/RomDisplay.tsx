@@ -28,6 +28,7 @@ function RomDisplay(props: RomDisplayProps) {
                 */}
                 <CardText expandable={true}>
                     <p>File Name: {props.rom.name}</p>
+                    <p>File Size: {props.rom.size}</p>
                     <p>Region: {props.rom.region}</p>
                     <p>Video: {props.rom.video}</p>
                     <p>MemMap: {props.rom.hiROM ? "HiROM" : "LoROM"}</p>

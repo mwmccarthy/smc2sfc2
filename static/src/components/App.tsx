@@ -6,11 +6,11 @@ import FileDownload from "./FileDownload";
 import RomDisplay from "./RomDisplay";
 import SNESROM from "../libraries/SNESROM";
 import * as JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 interface AppProps { };
-interface AppState {
-    roms: { [hash: string]: SNESROM }
-};
+interface AppState { roms: { [hash: string]: SNESROM } };
+interface RomDict { [hash: string]: SNESROM };
 
 class App extends React.Component<AppProps, AppState> {
     constructor() {
@@ -21,9 +21,11 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     handleFileChange(e: React.FormEvent<HTMLInputElement>): void {
-        const roms: { [hash: string]: SNESROM } = {};
+        const roms: RomDict = {};
         Object.assign(roms, this.state.roms);
         const newRoms: File[] = Array.from(e.currentTarget.files);
+
+        const reader = new FileReader();
 
         e.currentTarget.value = "";
 
@@ -36,31 +38,37 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     handleRemove(hash: string): void {
-        const roms: { [hash: string]: SNESROM } = {};
+        const roms: RomDict = {};
         Object.assign(roms, this.state.roms);
         delete roms[hash];
         this.setState({ roms: roms });
     }
 
     handleDownload(e: __MaterialUI.TouchTapEvent): void {
+        const roms: RomDict = {};
+        Object.assign(roms, this.state.roms);
         const zip = new JSZip();
-        console.log(`yes yes y'all! ${JSZip.support.uint8array}`)
-        
+        for (const key of Object.keys(roms)) {
+            zip.file(roms[key].name, roms[key].buffer);
+        }
+        zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
+    }
+
+    shouldComponentUpdate(nextProps: AppProps, nextState: AppState) {
+        return true;
     }
 
     render() {
         const romsList: JSX.Element[] = [];
 
-        for (const key in this.state.roms) {
-            if (this.state.roms.hasOwnProperty(key)) {
-                romsList.push(
-                    <RomDisplay
-                        key={key}
-                        rom={this.state.roms[key]}
-                        remove={(hash: string) => this.handleRemove(hash)}
-                    />
-                );
-            }
+        for (const key of Object.keys(this.state.roms)) {
+            romsList.push(
+                <RomDisplay
+                    key={key}
+                    rom={this.state.roms[key]}
+                    remove={(hash: string) => this.handleRemove(hash)}
+                />
+            );
         }
 
         return (
