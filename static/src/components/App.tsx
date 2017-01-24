@@ -20,16 +20,16 @@ class App extends React.Component<AppProps, AppState> {
         };
     }
 
-    handleFileChange(e: React.FormEvent<HTMLInputElement>): void {
+    handleFileChange(event: React.FormEvent<HTMLInputElement>): void {
         const roms: RomDict = {};
         Object.assign(roms, this.state.roms);
-        const newRoms: File[] = Array.from(e.currentTarget.files);
-        e.currentTarget.value = "";
+        const newRoms: File[] = Array.from(event.currentTarget.files);
+        event.currentTarget.value = "";
 
-        for (const f of newRoms) {
+        for (const file of newRoms) {
             const reader = new FileReader();
-            const name = f.name;
-            reader.addEventListener("load", (e) => {
+            const name = file.name;
+            reader.addEventListener("load", () => {
                 const buf = reader.result;
                 const rom = new SNESROM(name, buf);
                 const roms: RomDict = {};
@@ -39,7 +39,7 @@ class App extends React.Component<AppProps, AppState> {
                     this.setState({ roms: roms });
                 }
             })
-            reader.readAsArrayBuffer(f);
+            reader.readAsArrayBuffer(file);
         }
     }
 
