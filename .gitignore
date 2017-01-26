@@ -8,3 +8,4 @@ webpack-assets.json
 README.html
 typings*
 *.log
+tslint.json

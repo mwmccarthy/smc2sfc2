@@ -1,70 +1,25 @@
-import * as React from "react";
-import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
-import HardwareVideogameAsset from "material-ui/svg-icons/hardware/videogame-asset";
-import FileField from "./FileField";
-import FileDownload from "./FileDownload";
-import RomDisplay from "./RomDisplay";
-import SNESROM from "../libraries/SNESROM";
-import * as JSZip from "jszip";
 import { saveAs } from "file-saver";
+import * as JSZip from "jszip";
+import HardwareVideogameAsset from "material-ui/svg-icons/hardware/videogame-asset";
+import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
+import * as React from "react";
+import SNESROM from "../libraries/SNESROM";
+import FileDownload from "./FileDownload";
+import FileField from "./FileField";
+import RomDisplay from "./RomDisplay";
 
-interface AppProps { };
-interface AppState { roms: { [hash: string]: SNESROM } };
-interface RomDict { [hash: string]: SNESROM };
+interface IAppState { roms: { [hash: string]: SNESROM }; };
+interface IRomDict { [hash: string]: SNESROM; };
 
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<void, IAppState> {
     constructor() {
         super();
         this.state = {
-            roms: {}
+            roms: {},
         };
     }
 
-    handleFileChange(event: React.FormEvent<HTMLInputElement>): void {
-        const roms: RomDict = {};
-        Object.assign(roms, this.state.roms);
-        const newRoms: File[] = Array.from(event.currentTarget.files);
-        event.currentTarget.value = "";
-
-        for (const file of newRoms) {
-            const reader = new FileReader();
-            const name = file.name;
-            reader.addEventListener("load", () => {
-                const buf = reader.result;
-                const rom = new SNESROM(name, buf);
-                const roms: RomDict = {};
-                Object.assign(roms, this.state.roms);
-                if (!roms.hasOwnProperty(rom.hash)) {
-                    roms[rom.hash] = rom;
-                    this.setState({ roms: roms });
-                }
-            })
-            reader.readAsArrayBuffer(file);
-        }
-    }
-
-    handleRemove(hash: string): void {
-        const roms: RomDict = {};
-        Object.assign(roms, this.state.roms);
-        delete roms[hash];
-        this.setState({ roms: roms });
-    }
-
-    handleDownload(e: __MaterialUI.TouchTapEvent): void {
-        const roms: RomDict = {};
-        Object.assign(roms, this.state.roms);
-        const zip = new JSZip();
-        for (const key of Object.keys(roms)) {
-            zip.file(roms[key].name, roms[key].buffer);
-        }
-        zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
-    }
-
-    shouldComponentUpdate(nextProps: AppProps, nextState: AppState) {
-        return true;
-    }
-
-    render() {
+    public render() {
         const romsList: JSX.Element[] = [];
 
         for (const key of Object.keys(this.state.roms)) {
@@ -73,7 +28,7 @@ class App extends React.Component<AppProps, AppState> {
                     key={key}
                     rom={this.state.roms[key]}
                     remove={(hash: string) => this.handleRemove(hash)}
-                />
+                />,
             );
         }
 
@@ -108,6 +63,45 @@ class App extends React.Component<AppProps, AppState> {
                 <div>{romsList}</div>
             </div>
         );
+    }
+
+    private handleFileChange(event: React.FormEvent<HTMLInputElement>): void {
+        const roms: IRomDict = {};
+        Object.assign(roms, this.state.roms);
+        const newRoms: File[] = Array.from(event.currentTarget.files);
+        event.currentTarget.value = "";
+
+        for (const file of newRoms) {
+            const reader = new FileReader();
+            const name = file.name;
+            reader.addEventListener("load", () => {
+                const buf = reader.result;
+                const rom = new SNESROM(name, buf);
+                Object.assign(roms, this.state.roms);
+                if (!roms.hasOwnProperty(rom.hash)) {
+                    roms[rom.hash] = rom;
+                    this.setState({ roms });
+                }
+            });
+            reader.readAsArrayBuffer(file);
+        }
+    }
+
+    private handleRemove(hash: string): void {
+        const roms: IRomDict = {};
+        Object.assign(roms, this.state.roms);
+        delete roms[hash];
+        this.setState({ roms });
+    }
+
+    private handleDownload(e: __MaterialUI.TouchTapEvent): void {
+        const roms: IRomDict = {};
+        Object.assign(roms, this.state.roms);
+        const zip = new JSZip();
+        for (const key of Object.keys(roms)) {
+            zip.file(roms[key].name, roms[key].buffer);
+        }
+        zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
     }
 }
 

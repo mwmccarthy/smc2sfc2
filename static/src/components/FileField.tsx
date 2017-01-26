@@ -1,11 +1,11 @@
-import * as React from "react";
 import FlatButton from "material-ui/FlatButton";
+import * as React from "react";
 
-interface FileFieldProps {
-    onChange: Function
+interface IFileFieldProps {
+    onChange: Function;
 };
 
-function FileField(props: FileFieldProps) {
+function FileField(props: IFileFieldProps) {
     return (
         <div className="file-field" style={{ margin: "1rem" }}>
             <FlatButton

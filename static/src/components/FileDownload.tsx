@@ -6,32 +6,23 @@ import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 import Toggle from "material-ui/Toggle";
 
-interface FileDownloadProps {
-    handleDownload: Function
+interface IFileDownloadProps {
+    handleDownload: Function;
 };
-interface FileDownloadState {
-    open: boolean,
-    anchorEl?: Element
+interface IFileDownloadState {
+    open: boolean;
+    anchorEl?: Element;
 };
 
-class FileDownload extends React.Component<FileDownloadProps, FileDownloadState> {
-    constructor(props: FileDownloadProps) {
+class FileDownload extends React.Component<IFileDownloadProps, IFileDownloadState> {
+    constructor(props: IFileDownloadProps) {
         super(props);
         this.state = {
-            open: false
+            open: false,
         };
     }
 
-    handleTouchTap(e: __MaterialUI.TouchTapEvent) {
-        e.preventDefault();
-
-        this.setState({
-            open: true,
-            anchorEl: e.currentTarget as Element
-        });
-    }
-
-    render() {
+    public render() {
         const downloadButton = (
             <IconButton
                 tooltip="Download ROMs"
@@ -59,6 +50,15 @@ class FileDownload extends React.Component<FileDownloadProps, FileDownloadState>
                 </IconMenu>
             </div>
         );
+    }
+
+    private handleTouchTap(e: __MaterialUI.TouchTapEvent) {
+        e.preventDefault();
+
+        this.setState({
+            anchorEl: e.currentTarget as Element,
+            open: true,
+        });
     }
 }
 

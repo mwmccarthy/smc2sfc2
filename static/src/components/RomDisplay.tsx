@@ -1,16 +1,16 @@
-import * as React from "react";
-import SNESROM from "../libraries/SNESROM";
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardMedia, CardText } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import NavigationExpandMore from "material-ui/svg-icons/navigation/expand-more";
+import * as React from "react";
+import SNESROM from "../libraries/SNESROM";
 
-interface RomDisplayProps {
-    rom: SNESROM,
-    key: string
-    remove: Function
+interface IRomDisplayProps {
+    rom: SNESROM;
+    key: string;
+    remove: Function;
 };
 
-function RomDisplay(props: RomDisplayProps) {
+function RomDisplay(props: IRomDisplayProps) {
     return (
         <div style={{ margin: "1rem" }}>
             <Card>
