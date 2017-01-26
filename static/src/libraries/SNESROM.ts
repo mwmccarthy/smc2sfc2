@@ -16,7 +16,7 @@ class SNESROM {
         this.buffer = buf;
         this.size = buf.byteLength;
         this.headerSize = this.size % SNESROM.MIN_ROM_SIZE;
-        this.hash = md5(this.buffer);
+        this.hash = md5(this.buffer.slice(this.headerSize));
         this.detectMemMap();
         this.parseHeader();
     }

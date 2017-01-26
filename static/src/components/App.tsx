@@ -94,14 +94,28 @@ class App extends React.Component<void, IAppState> {
         this.setState({ roms });
     }
 
-    private handleDownload(e: __MaterialUI.TouchTapEvent): void {
+    private handleDownload(headers: boolean): void {
         const roms: IRomDict = {};
         Object.assign(roms, this.state.roms);
         const zip = new JSZip();
         for (const key of Object.keys(roms)) {
-            zip.file(roms[key].name, roms[key].buffer);
+            const buffer = roms[key].buffer.slice(roms[key].headerSize));
+	    const name = roms[key].name.replace(/\.[^.]+$/, "");
+            if (headers) {
+                zip.file(name + ".smc", this.concatBuffers(new ArrayBuffer(512), buffer));
+            }
+	    else {
+                zip.file(name + ".sfc", buffer);
+	    }
         }
         zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
+    }
+
+    private concatBuffers(buffer1: ArrayBuffer, buffer2: ArrayBuffer): ArrayBuffer {
+        const result = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
+        result.set(new Uint8Array(buffer1), 0);
+        result.set(new Uint8Array(buffer2), buffer1.byteLength);
+        return result.buffer;
     }
 }
 
