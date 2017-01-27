@@ -42,9 +42,9 @@ class FileDownload extends React.Component<IFileDownloadProps, IFileDownloadStat
                     targetOrigin={{ horizontal: "right", vertical: "top" }}
                 >
                     <MenuItem
-		    	primaryText="no headers (.sfc)"
-			onTouchTap={() => this.props.handleDownload(false)}
-		    />
+                        primaryText="no headers (.sfc)"
+                        onTouchTap={() => this.props.handleDownload(false)}
+                    />
                     <MenuItem
                         primaryText="with headers (.smc)"
                         onTouchTap={() => this.props.handleDownload(true)}

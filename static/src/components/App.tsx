@@ -100,13 +100,12 @@ class App extends React.Component<void, IAppState> {
         const zip = new JSZip();
         for (const key of Object.keys(roms)) {
             const buffer = roms[key].buffer.slice(roms[key].headerSize));
-	    const name = roms[key].name.replace(/\.[^.]+$/, "");
+            const name = roms[key].name.replace(/\.[^.]+$/, "");
             if (headers) {
                 zip.file(name + ".smc", this.concatBuffers(new ArrayBuffer(512), buffer));
-            }
-	    else {
+            } else {
                 zip.file(name + ".sfc", buffer);
-	    }
+            }
         }
         zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
     }
