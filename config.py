@@ -1,9 +1,7 @@
-DEBUG=True
+from os import environ
+from sys import modules
 
-#from os import environ
-#from sys import modules
+attrs = ['DEBUG']
 
-#attrs = ['DEBUG', 'SECRET_KEY']
-
-#for attr in attrs:
-#    setattr(modules[__name__], attr, environ[attr])
+for attr in attrs:
+    setattr(modules[__name__], attr, environ[attr])
