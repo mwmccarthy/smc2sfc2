@@ -99,7 +99,7 @@ class App extends React.Component<void, IAppState> {
         Object.assign(roms, this.state.roms);
         const zip = new JSZip();
         for (const key of Object.keys(roms)) {
-            const buffer = roms[key].buffer.slice(roms[key].headerSize));
+            const buffer = roms[key].buffer;
             const name = roms[key].name.replace(/\.[^.]+$/, "");
             if (headers) {
                 zip.file(name + ".smc", this.concatBuffers(new ArrayBuffer(512), buffer));
@@ -107,7 +107,9 @@ class App extends React.Component<void, IAppState> {
                 zip.file(name + ".sfc", buffer);
             }
         }
-        zip.generateAsync({ type: "blob" }).then((content) => saveAs(content, "ROMS.zip"));
+        zip.generateAsync({ type: "blob" }).then((content) => {
+            saveAs(content, (headers ? "smc" : "sfc") + " ROMs.zip");
+        });
     }
 
     private concatBuffers(buffer1: ArrayBuffer, buffer2: ArrayBuffer): ArrayBuffer {

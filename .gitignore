@@ -9,3 +9,4 @@ README.html
 typings*
 *.log
 tslint.json
+*.swp
