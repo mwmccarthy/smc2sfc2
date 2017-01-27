@@ -3,6 +3,8 @@ SNES ROM converter
 
 Runs on Python 2.7 and Node 7.3.0
 
+A web app to batch convert SNES ROM formats from .smc to .sfc or vice versa.
+
 ### On Heroku
 
 https://smc2sfc2.herokuapp.com/
@@ -24,9 +26,9 @@ npm install
 gunicorn routes:app
 ```
 
-TODO
+### TODO
 - [ ] Validate input files
-- [ ] pull game info from thegamesdb.net
+- [ ] Support renaming files
 - [ ] pull game info from thegamesdb.net
 - [ ] accept ROMs inside zip archives
 - [ ] serve back individually zipped ROMs

@@ -48,13 +48,13 @@ class App extends React.Component<void, IAppState> {
                         </ToolbarGroup>
                         <ToolbarGroup lastChild={true}>
                             <FileField
-                                onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                                    return this.handleFileChange(e);
+                                onChange={(event: React.FormEvent<HTMLInputElement>) => {
+                                    return this.handleFileChange(event);
                                 }}
                             />
                             <FileDownload
-                                handleDownload={(e: __MaterialUI.TouchTapEvent) => {
-                                    return this.handleDownload(e);
+                                handleDownload={(event: __MaterialUI.TouchTapEvent, headers: boolean) => {
+                                    return this.handleDownload(event, headers);
                                 }}
                             />
                         </ToolbarGroup>
@@ -94,7 +94,7 @@ class App extends React.Component<void, IAppState> {
         this.setState({ roms });
     }
 
-    private handleDownload(headers: boolean): void {
+    private handleDownload(event: __MaterialUI.TouchTapEvent, headers: boolean): void {
         const roms: IRomDict = {};
         Object.assign(roms, this.state.roms);
         const zip = new JSZip();
