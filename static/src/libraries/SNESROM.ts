@@ -18,8 +18,10 @@ class SNESROM {
         this.buffer = buf.slice(this.headerSize);
         this.size = this.buffer.byteLength;
         this.hash = md5(this.buffer);
-        this.detectMemMap();
-        this.parseHeader();
+        if (SNESROM.MIN_ROM_SIZE <= this.size && this.size <= SNESROM.MAX_ROM_SIZE) {
+            this.detectMemMap();
+            this.parseHeader();
+        }
     }
 
     public valid(): boolean {

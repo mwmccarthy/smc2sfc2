@@ -11,9 +11,10 @@ import FileField from "./FileField";
 import RomDisplay from "./RomDisplay";
 
 interface IAppState {
-    duplicates: number;
     loading: boolean;
     roms: { [hash: string]: SNESROM };
+    notify: boolean;
+    notification: string;
 };
 interface IRomDict { [hash: string]: SNESROM; };
 
@@ -21,9 +22,10 @@ class App extends React.Component<void, IAppState> {
     constructor() {
         super();
         this.state = {
-            duplicates: 0,
             loading: false,
             roms: {},
+            notify: false,
+            notification: "",
         };
     }
 
@@ -67,7 +69,7 @@ class App extends React.Component<void, IAppState> {
                                 handleDownload={(event: __MaterialUI.TouchTapEvent, headers: boolean) => {
                                     return this.handleDownload(event, headers);
                                 }}
-                                enabled={Boolean(Object.keys(this.state.roms).length)}
+                                enabled={Object.keys(this.state.roms).length > 0}
                             />
                         </ToolbarGroup>
                     </Toolbar>
@@ -75,17 +77,27 @@ class App extends React.Component<void, IAppState> {
                 <div>{progressBar}</div>
                 <div>{romsList}</div>
                 <Snackbar
-                    open={Boolean(this.state.duplicates)}
-                    message={`${this.state.duplicates} of those ROMs were duplicates or already in the list`}
+                    open={this.state.notify}
+                    message={this.state.notification}
                     autoHideDuration={4000}
                 />
             </div>
         );
     }
 
+    private shouldComponentUpdate(nextProps: void, nextState: IAppState): boolean {
+        if (this.state.notify === true && nextState.notify === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private handleFileChange(event: React.FormEvent<HTMLInputElement>): void {
         const state = Object.assign({}, this.state);
+        const numFiles = event.currentTarget.files.length;
         const newRoms: File[] = Array.from(event.currentTarget.files);
+
         // TODO: do this with React
         event.currentTarget.value = "";
 
@@ -93,8 +105,7 @@ class App extends React.Component<void, IAppState> {
         this.setState(state);
 
         let romCount = 0;
-        let duplicateCount = 0;
-        let invalidCount = 0;
+        let notAddedCount = 0;
 
         for (const file of newRoms) {
             const reader = new FileReader();
@@ -102,17 +113,28 @@ class App extends React.Component<void, IAppState> {
             reader.addEventListener("load", () => {
                 const rom = new SNESROM(name, reader.result);
                 romCount++;
-                if (state.roms.hasOwnProperty(rom.hash)) {
-                    duplicateCount++;
-                } else if (!rom.valid()) {
-                    invalidCount++;
+                if (state.roms.hasOwnProperty(rom.hash) || !rom.valid()) {
+                    notAddedCount++;
                 } else {
                     state.roms[rom.hash] = rom;
                 }
                 if (romCount === newRoms.length) {
                     state.loading = false;
-                    state.duplicates = duplicateCount;
+                    if (notAddedCount > 0) {
+                        state.notify = true;
+                        if (notAddedCount > 1) {
+                            state.notification = notAddedCount
+                                + " duplicate or invalid ROMs were not added.";
+                        } else {
+                            state.notification = "1 duplicate or invalid ROM was not added.";
+                        }
+                    }
                     this.setState(state);
+                    if(state.notify) {
+                        state.notify = false;
+                        state.notification = "";
+                        this.setState(state);
+                    }
                 }
             });
             reader.readAsArrayBuffer(file);
@@ -155,3 +177,4 @@ class App extends React.Component<void, IAppState> {
 }
 
 export default App;
+
