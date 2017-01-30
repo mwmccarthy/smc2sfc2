@@ -27,7 +27,7 @@ gunicorn routes:app
 ```
 
 ### TODO
-- [ ] Validate input files
+- [x] Validate input files
 - [ ] Support renaming files
 - [ ] pull game info from thegamesdb.net
 - [ ] accept ROMs inside zip archives
