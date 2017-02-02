@@ -23,9 +23,9 @@ class App extends React.Component<void, IAppState> {
         super();
         this.state = {
             loading: false,
-            roms: {},
-            notify: false,
             notification: "",
+            notify: false,
+            roms: {},
         };
     }
 
@@ -130,7 +130,7 @@ class App extends React.Component<void, IAppState> {
                         }
                     }
                     this.setState(state);
-                    if(state.notify) {
+                    if (state.notify) {
                         state.notify = false;
                         state.notification = "";
                         this.setState(state);
@@ -177,4 +177,3 @@ class App extends React.Component<void, IAppState> {
 }
 
 export default App;
-
