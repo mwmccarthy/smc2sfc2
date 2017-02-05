@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/file-saver": "0.0.0",
-    "@types/js-md5": "^0.3.29",
+    "@types/js-md5": "^0.4.0",
     "@types/jszip": "0.0.32",
     "@types/material-ui": "^0.16.47",
     "@types/react-tap-event-plugin": "0.0.30",
